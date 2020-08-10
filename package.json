@@ -1,0 +1,11 @@
+{
+  "name": "AntiTTS",
+  "version": "1.0.0",
+  "description": "Discord bot to ban users that commit the crime of using tts",
+  "main": "index.js",
+  "author": "ArturHugo",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^12.2.0"
+  }
+}
