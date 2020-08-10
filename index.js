@@ -41,10 +41,8 @@ client.on("message", (message) => {
 		let TTSAuthor = message.guild.members.cache.get(message.author.id);
 		let handler = client.TTSHandlers.get(message.guild.id);
 
-		// handler.warn(TTSAuthor);
-
+		handler.warn(message);
 		handler.kick(message);
-
 		// handler.invite(TTSAuthor);
 	} else {
 		if (!message.content.startsWith(prefix) || message.author.bot) return;
