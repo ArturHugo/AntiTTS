@@ -1,9 +1,11 @@
 const fs = require("fs");
 const Discord = require("discord.js");
+const TTSHandler = require("./TTSHandler");
 const { prefix, token } = require("./config.json");
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
+client.TTSHandlers = new Discord.Collection();
 
 // Filter js files from commands folder
 const commandFiles = fs
@@ -26,18 +28,24 @@ for (const file of commandFiles) {
 
 client.on("ready", () => {
 	console.log(`Logged in as ${client.user.tag}!`);
+
+	// Initializing handlers for each guild.
+	for (const guild of client.guilds.cache.values()) {
+		client.TTSHandlers.set(guild.id, new TTSHandler(guild));
+	}
 });
 
 client.on("message", (message) => {
 	if (message.tts) {
 		message.reply("disse mecão, tomou um chutão.");
-		message.guild.members.cache
-			.get(message.author.id)
-			.kick("vc disse mecão")
-			.catch((error) => {
-				console.log(error);
-				message.reply("I do not have permission to kick you.");
-			});
+		let TTSAuthor = message.guild.members.cache.get(message.author.id);
+		let handler = client.TTSHandlers.get(message.guild.id);
+
+		// handler.warn(TTSAuthor);
+
+		handler.kick(message);
+
+		// handler.invite(TTSAuthor);
 	} else {
 		if (!message.content.startsWith(prefix) || message.author.bot) return;
 
