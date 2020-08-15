@@ -1,7 +1,7 @@
 const fs = require("fs");
 const Discord = require("discord.js");
-const TTSHandler = require("./TTSHandler");
-const { prefix, token } = require("./config.json");
+const kickTTSAuthorPipeline = require("./kickTTSAuthorPipeline");
+const { prefix, token } = require("../config.json");
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -9,7 +9,7 @@ client.TTSHandlers = new Discord.Collection();
 
 // Filter js files from commands folder
 const commandFiles = fs
-	.readdirSync("./commands")
+	.readdirSync("src/commands")
 	.filter((file) => file.endsWith(".js"));
 
 // Set commands exported by each command module
@@ -21,29 +21,26 @@ for (const file of commandFiles) {
 // {
 //   name: "command_name",
 //   description: "Command description in plain text.",
-//   execute: excute(message, args) {
+//   excute(message, args) {
 //     ...command execution logic...
 //   }
 // }
 
+// Defining default options for the pipeline
+const defaultPipelineOptions = {
+	initialReplyMessage: "disse mecão, tomou um chutão!",
+	audioWarningURL: "https://www.youtube.com/watch?v=cO8VfSBMU8Y",
+	kickReasonMessage: "disse mecão, tomou um chutão.",
+	kickFailedMessage: "I do not have permission to kick you.",
+};
+
 client.on("ready", () => {
 	console.log(`Logged in as ${client.user.tag}!`);
-
-	// Initializing handlers for each guild.
-	for (const guild of client.guilds.cache.values()) {
-		client.TTSHandlers.set(guild.id, new TTSHandler(guild));
-	}
 });
 
 client.on("message", (message) => {
 	if (message.tts) {
-		message.reply("disse mecão, tomou um chutão.");
-		let TTSAuthor = message.guild.members.cache.get(message.author.id);
-		let handler = client.TTSHandlers.get(message.guild.id);
-
-		handler.warn(message);
-		handler.kick(message);
-		// handler.invite(TTSAuthor);
+		kickTTSAuthorPipeline.execute(message, defaultPipelineOptions);
 	} else {
 		if (!message.content.startsWith(prefix) || message.author.bot) return;
 
