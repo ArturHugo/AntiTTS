@@ -45,6 +45,8 @@ function playWarning(message, pipelineOptions, func) {
 				console.log(error);
 				pipelineAbortLog(func);
 			});
+	} else {
+		func(message, pipelineOptions, kickMember);
 	}
 }
 
