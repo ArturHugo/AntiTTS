@@ -5,6 +5,13 @@
   "main": "index.js",
   "author": "ArturHugo",
   "license": "MIT",
+  "engines": {
+    "node": "12.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
     "discord.js": "^12.2.0",
