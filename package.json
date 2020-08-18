@@ -1,5 +1,5 @@
 {
-  "name": "AntiTTS",
+  "name": "anti-tts",
   "version": "1.0.0",
   "description": "Discord bot to ban users that commit the crime of using tts",
   "main": "index.js",
