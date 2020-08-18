@@ -5,7 +5,6 @@ const { prefix, token } = require("../config.js");
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
-client.TTSHandlers = new Discord.Collection();
 
 // Filter js files from commands folder
 const commandFiles = fs
